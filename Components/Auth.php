@@ -1,0 +1,47 @@
+<?php
+
+
+class Auth
+{
+    public $db;
+
+    public function __construct(QueryBuilder $db)
+    {
+        $this->db = $db;
+    }
+
+    public function register($email, $password)
+    {
+      $data = [
+      "email" => $email,
+      "password" => md5($password)
+    ];
+
+        $this->db->store("users", $data);
+    }
+
+    public function login($email, $password){
+
+    $sql = "SELECT * FROM users WHERE email=:email AND password=:password LIMIT 1";
+
+    $password = md5($password);
+
+    $statement = $this->db->pdo->prepare($sql);
+
+    $statement->bindParam(":email", $email);
+
+    $statement->bindParam(":password", $password);
+
+    $statement->execute();
+
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($user){
+      $_SESSION["user"] = $user;
+      return true;
+    }
+
+    return false;
+  }
+
+}
