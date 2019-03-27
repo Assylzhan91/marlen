@@ -14,14 +14,26 @@ require 'Components/Auth.php';
 
 $db = new QueryBuilder;
 
+
+
+
+
 $auth = new Auth($db);
+
 
 
 $tasks = $db->all("tasks");
 
 $auth->register("user2@expample.com", "asd");
 
-var_dump($auth->login('user2@expample.com', 'asd'));
+
+$auth->login('user2@expample.com', 'asd');
+
+//$auth->logout();
+
+$user =  $auth->currentUser();
+
+var_dump($user);
 
 
 exit;

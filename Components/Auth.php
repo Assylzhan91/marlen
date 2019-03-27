@@ -20,6 +20,7 @@ class Auth
         $this->db->store("users", $data);
     }
 
+
     public function login($email, $password){
 
     $sql = "SELECT * FROM users WHERE email=:email AND password=:password LIMIT 1";
@@ -43,5 +44,30 @@ class Auth
 
     return false;
   }
+
+    public function logout(){
+      unset($_SESSION['user']);
+    }
+
+
+    public function check(){
+      if(isset($_SESSION['user'])){
+        return true;
+      }
+
+      return false;
+    }
+
+
+    static public function currentUser(){
+
+      if(isset($_SESSION['user'])){
+        return $_SESSION['user'];
+      }
+    }
+
+    public function getCleanPassword(){
+      $user = self::currentUser();
+    }
 
 }
